@@ -16,7 +16,9 @@ val testContainersVersion by extra("1.15.0")
 plugins {
     id("org.springframework.boot") version "2.4.0"
     id("com.github.ben-manes.versions") version "0.36.0"
+    id("com.star-zero.gradle.githook") version "1.2.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("ru.netris.commitlint") version "1.3.1"
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
 }
@@ -52,6 +54,16 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testImplementation("org.testcontainers:r2dbc:$testContainersVersion")
+}
+
+githook {
+    failOnMissingHooksDir = true
+    createHooksDirIfNotExist = false
+    hooks {
+        create("commit-msg") {
+            task = "commitlint -Dmsgfile=\$1"
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
