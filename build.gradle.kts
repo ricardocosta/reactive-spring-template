@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val flywayVersion by extra("7.3.1")
@@ -14,6 +15,7 @@ val testContainersVersion by extra("1.15.0")
 
 plugins {
     id("org.springframework.boot") version "2.4.0"
+    id("com.github.ben-manes.versions") version "0.36.0"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
@@ -61,4 +63,20 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
+    fun isNonStable(version: String): Boolean {
+        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        val isStable = stableKeyword || regex.matches(version)
+        return isStable.not()
+    }
+
+    rejectVersionIf {
+        isNonStable(candidate.version)
+    }
+
+    checkForGradleUpdate = true
+    gradleReleaseChannel = "current"
 }
