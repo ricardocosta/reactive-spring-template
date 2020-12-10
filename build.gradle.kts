@@ -17,6 +17,7 @@ plugins {
     id("org.springframework.boot") version "2.4.0"
     id("com.github.ben-manes.versions") version "0.36.0"
     id("com.star-zero.gradle.githook") version "1.2.1"
+    id("io.gitlab.arturbosch.detekt") version "1.15.0-RC1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("ru.netris.commitlint") version "1.3.1"
     kotlin("jvm") version "1.4.21"
@@ -29,6 +30,13 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+    jcenter {
+        content {
+            // just allow to include kotlinx projects
+            // detekt needs 'kotlinx-html' for the html report
+            includeGroup("org.jetbrains.kotlinx")
+        }
+    }
 }
 
 dependencies {
@@ -56,12 +64,17 @@ dependencies {
     testImplementation("org.testcontainers:r2dbc:$testContainersVersion")
 }
 
+detekt {
+    toolVersion = "1.15.0-RC1"
+    parallel = true
+}
+
 githook {
     failOnMissingHooksDir = true
     createHooksDirIfNotExist = false
     hooks {
-        create("commit-msg") {
-            task = "commitlint -Dmsgfile=\$1"
+        register("commit-msg") {
+            task = "commitlint"
         }
     }
 }
