@@ -14,11 +14,12 @@ val springBootVersion by extra("2.4.0")
 val testContainersVersion by extra("1.15.0")
 
 plugins {
-    id("org.springframework.boot") version "2.4.0"
+    id("com.geoffgranum.gradle-conventional-changelog") version "0.3.1"
     id("com.github.ben-manes.versions") version "0.36.0"
     id("com.star-zero.gradle.githook") version "1.2.1"
     id("io.gitlab.arturbosch.detekt") version "1.15.0-RC1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("org.springframework.boot") version "2.4.0"
     id("ru.netris.commitlint") version "1.3.1"
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
@@ -62,6 +63,12 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testImplementation("org.testcontainers:r2dbc:$testContainersVersion")
+}
+
+changelog {
+    appName = "Template Application"
+    repoUrl = "https://github.com/ricardocosta/reactive-spring-template"
+    match = "^fix|^feat|^chore|^perf|^refactor|BREAKING"
 }
 
 detekt {
