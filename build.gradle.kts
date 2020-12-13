@@ -24,6 +24,7 @@ plugins {
     id("ru.netris.commitlint") version "1.3.1"
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
+    jacoco
 }
 
 group = "com.ricardocosta"
@@ -91,6 +92,11 @@ githook {
     }
 }
 
+jacoco {
+    toolVersion = "0.8.6"
+    reportsDir = file("$rootDir/coverage")
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -116,4 +122,22 @@ tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
 
     checkForGradleUpdate = true
     gradleReleaseChannel = "current"
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.85".toBigDecimal()
+            }
+        }
+    }
 }
