@@ -87,7 +87,7 @@ githook {
         }
 
         register("pre-commit") {
-            task = "ktlintCheck"
+            task = "ktlintCheck detekt"
         }
     }
 }
