@@ -19,6 +19,7 @@ plugins {
     id("com.star-zero.gradle.githook") version "1.2.1"
     id("io.gitlab.arturbosch.detekt") version "1.15.0-RC1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     id("org.springframework.boot") version "2.4.0"
     id("ru.netris.commitlint") version "1.3.1"
     kotlin("jvm") version "1.4.21"
@@ -82,6 +83,10 @@ githook {
     hooks {
         register("commit-msg") {
             task = "commitlint"
+        }
+
+        register("pre-commit") {
+            task = "ktlintCheck"
         }
     }
 }
