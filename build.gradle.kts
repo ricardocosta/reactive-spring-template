@@ -11,7 +11,7 @@ val reactorKotlinVersion by extra("1.1.1")
 val r2dbcPoolVersion by extra("0.8.5.RELEASE")
 val reactorTestVersion by extra("3.4.1")
 val springBootVersion by extra("2.4.0")
-val testContainersVersion by extra("1.15.0")
+val testContainersVersion by extra("1.15.1")
 
 plugins {
     id("com.geoffgranum.gradle-conventional-changelog") version "0.3.1"
