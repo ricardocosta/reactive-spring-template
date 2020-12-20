@@ -1,5 +1,7 @@
 <h1>Reactive Spring Template</h1>
 
+![ricardocosta](https://circleci.com/gh/ricardocosta/reactive-spring-template.svg?style=shield)
+
 Template for a reactive Spring Boot application.
 
 ## 🔌 Running
