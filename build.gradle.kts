@@ -20,7 +20,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.36.0"
     id("com.star-zero.gradle.githook") version "1.2.1"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     id("org.springframework.boot") version "2.4.0"
     id("ru.netris.commitlint") version "1.4"
