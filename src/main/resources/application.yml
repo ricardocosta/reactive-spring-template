@@ -17,3 +17,11 @@ logging.level:
   root: WARN
   org.springframework: WARN
   com.ricardocosta.template: DEBUG
+springdoc:
+  swagger-ui:
+    defaultModelsExpandDepth: -1
+    operationsSorter: alpha
+    path: /api.html
+    tagsSorter: alpha
+  default-produces-media-type: application/json
+  show-actuator: true

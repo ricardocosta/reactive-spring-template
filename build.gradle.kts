@@ -12,6 +12,7 @@ val reactorKotlinVersion by extra("1.1.1")
 val r2dbcPoolVersion by extra("0.8.5.RELEASE")
 val reactorTestVersion by extra("3.4.1")
 val springBootVersion by extra("2.4.0")
+val springDocVersion by extra("1.5.2")
 val testContainersVersion by extra("1.15.1")
 
 plugins {
@@ -51,6 +52,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutinesVersion")
+    implementation("org.springdoc:springdoc-openapi-webflux-ui:$springDocVersion")
+    implementation("org.springdoc:springdoc-openapi-kotlin:$springDocVersion")
+    implementation("org.springdoc:springdoc-openapi-data-rest:$springDocVersion")
     implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
