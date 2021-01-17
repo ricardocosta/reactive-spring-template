@@ -29,7 +29,8 @@ To run in IntelliJ, just run the `main` method in the `TemplateApplication` clas
 Be reminded that you may have to modify the Run Configuration in order to add environment variables that are not defined
 in the `application.yml` file.
 
-The application will be available at http://localhost:8080.
+The application will be available at http://localhost:8080. The API documentation following OpenAPI Specification v3 is
+available at http://localhost:8080/api.html.
 
 ## 🧰 Development
 
