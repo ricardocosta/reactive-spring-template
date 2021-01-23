@@ -15,3 +15,4 @@ logging.level:
   root: WARN
   org.springframework: WARN
   com.ricardocosta.template: DEBUG
+blockhound.active: false

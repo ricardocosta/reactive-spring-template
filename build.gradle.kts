@@ -6,10 +6,13 @@ val jacksonVersion by extra("2.12.0")
 val kotlinVersion by extra("1.4.21")
 val kotlinCoroutinesVersion by extra("1.4.2-native-mt")
 val kotlinLoggingVersion by extra("2.0.4")
+val mockitoKotlinVersion by extra("2.2.0")
+val mockitoVersion by extra("3.7.7")
 val postgresVersion by extra("42.2.18")
 val postgresR2dbcVersion by extra("0.8.6.RELEASE")
 val reactorKotlinVersion by extra("1.1.1")
 val r2dbcPoolVersion by extra("0.8.5.RELEASE")
+val reactorBlockHoundVersion by extra("1.0.4.RELEASE")
 val reactorTestVersion by extra("3.4.1")
 val springBootVersion by extra("2.4.0")
 val springDocVersion by extra("1.5.2")
@@ -26,12 +29,17 @@ plugins {
     id("ru.netris.commitlint") version "1.4.1"
     kotlin("jvm") version "1.4.21-2"
     kotlin("plugin.spring") version "1.4.21-2"
+    application
     jacoco
 }
 
 group = "com.ricardocosta"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+
+application {
+    applicationDefaultJvmArgs = listOf("-XX:+AllowRedefinitionToAddDeleteMethods")
+}
 
 repositories {
     mavenCentral()
@@ -47,6 +55,7 @@ repositories {
 dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:$reactorKotlinVersion")
+    implementation("io.projectreactor.tools:blockhound:$reactorBlockHoundVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
@@ -66,7 +75,9 @@ dependencies {
     runtimeOnly("io.r2dbc:r2dbc-postgresql:$postgresR2dbcVersion")
     runtimeOnly("org.postgresql:postgresql:$postgresVersion")
 
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion")
     testImplementation("io.projectreactor:reactor-test:$reactorTestVersion")
+    testImplementation("org.mockito:mockito-inline:$mockitoVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
@@ -134,19 +145,46 @@ tasks.test {
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
+val jacocoExclusions = listOf(
+    "com/ricardocosta/template/TemplateApplication*",
+    "**/*\$logger\$*.class"
+)
+
 tasks.jacocoTestReport {
     dependsOn(tasks.test) // tests are required to run before generating the report
     reports {
         xml.isEnabled = true
     }
+
+    classDirectories.setFrom(
+        sourceSets.main.get().output.asFileTree.matching {
+            exclude(jacocoExclusions)
+        }
+    )
 }
 
 tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
+            classDirectories.setFrom(
+                sourceSets.main.get().output.asFileTree.matching {
+                    exclude(jacocoExclusions)
+                }
+            )
             limit {
-                minimum = "0.85".toBigDecimal()
+                minimum = "0.95".toBigDecimal()
             }
         }
     }
+}
+
+tasks.create<Delete>("cleanCoverage") {
+    group = "build"
+    delete = setOf(
+        file("$rootDir/coverage")
+    )
+}
+
+tasks.clean {
+    finalizedBy("cleanCoverage")
 }

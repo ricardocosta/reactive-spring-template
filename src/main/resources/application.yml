@@ -25,3 +25,4 @@ springdoc:
     tagsSorter: alpha
   default-produces-media-type: application/json
   show-actuator: true
+blockhound.active: true

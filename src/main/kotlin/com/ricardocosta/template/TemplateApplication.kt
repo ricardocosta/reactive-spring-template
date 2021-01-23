@@ -1,5 +1,6 @@
 package com.ricardocosta.template
 
+import com.ricardocosta.template.listeners.BlockHoundRegisterListener
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -7,5 +8,7 @@ import org.springframework.boot.runApplication
 class TemplateApplication
 
 fun main(vararg args: String) {
-    runApplication<TemplateApplication>(*args)
+    runApplication<TemplateApplication>(*args) {
+        addListeners(BlockHoundRegisterListener())
+    }
 }
