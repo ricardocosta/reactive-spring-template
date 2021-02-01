@@ -52,12 +52,18 @@ $ git checkout -b release_$(date -u +"%Y%m%d")
 $ ./gradlew changelog
 ```
 
-3. Open a Pull Request against `main` and have it merged.
-
-4. Update your local `main` branch, generate the new tag and push it:
+3. Commit the updated changelog.
 
 ```
-$ git checkout master
+$ git commit -am "chore(release): v<new_version>"
+```
+
+4. Open a Pull Request against `main` and have it merged.
+
+5. Update your local `main` branch, generate the new tag and push it:
+
+```
+$ git checkout main
 $ git pull
 $ git tag v<new_version>
 $ git push --tags
